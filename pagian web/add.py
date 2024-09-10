@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
-app.secret_key = 'mi_llave_secreta'  # Llave para manejar sesiones
+app.secret_key = 'mi_llave_secreta'  
 
-# Lista de autos deportivos
+
 sports_cars = [
     {"name": "Ferrari F8 Tributo", "price": "$276,550", "description": "El Ferrari F8 Tributo es un auto V8 que redefine el rendimiento con un motor de 720 CV."},
     {"name": "Lamborghini Aventador", "price": "$393,695", "description": "El Lamborghini Aventador es un superdeportivo con un motor V12 de 770 CV, capaz de alcanzar los 350 km/h."},
@@ -12,7 +12,7 @@ sports_cars = [
     {"name": "Aston Martin Vantage", "price": "$139,000", "description": "El Aston Martin Vantage es un auto de lujo con un motor V8, capaz de generar 503 CV."}
 ]
 
-# Lista de motos deportivas
+
 sports_bikes = [
     {"name": "Yamaha YZF-R1", "price": "$17,399", "description": "La Yamaha YZF-R1 cuenta con un motor de 998cc y es conocida por su tecnología de MotoGP."},
     {"name": "Kawasaki Ninja H2", "price": "$29,500", "description": "La Kawasaki Ninja H2 es una moto sobrealimentada con 231 CV, capaz de alcanzar velocidades extremas."},
@@ -23,23 +23,30 @@ sports_bikes = [
 
 @app.route('/')
 def home():
-    # Verificar si el usuario ha iniciado sesión
-    if 'username' in session:
-        return render_template('index.html', cars=sports_cars, bikes=sports_bikes)
+    
+    if 'username' in session and 'sexo' in session:
+       
+        if session['sexo'] == 'Masculino':
+            return render_template('index.html', vehicles=sports_cars, title="Autos Deportivos")
+       
+        elif session['sexo'] == 'Femenino':
+            return render_template('index.html', vehicles=sports_bikes, title="Motos Deportivas")
     else:
-        return redirect(url_for('login'))  # Si no ha iniciado sesión, redirigir al login
+        return redirect(url_for('login')) 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # Obtener los datos del formulario de login
+        
         username = request.form['username']
         password = request.form['password']
+        sexo = request.form['sexo']  
 
-        # Validar credenciales (usuario: admin, contraseña: password123)
-        if username == 'Masculino' and password == 'password123':
-            session['username'] = username  # Guardar usuario en la sesión
-            return redirect(url_for('home'))  # Redirigir al home si es exitoso
+       
+        if username == 'admin' and password == 'password123':
+            session['username'] = username  
+            session['sexo'] = sexo  
+            return redirect(url_for('home'))  
         else:
             error = 'Credenciales incorrectas, inténtalo de nuevo.'
             return render_template('login.html', error=error)
@@ -48,7 +55,8 @@ def login():
 
 @app.route('/logout')
 def logout():
-    session.pop('username', None)  # Eliminar el usuario de la sesión
+    session.pop('username', None)  
+    session.pop('sexo', None) 
     return redirect(url_for('login'))
 
 if __name__ == '__main__':

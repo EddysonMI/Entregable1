@@ -1,69 +1,21 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vehículos Deportivos</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            padding: 20px;
-        }
-        header {
-            background-color: #333;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        .vehicle {
-            background-color: white;
-            padding: 10px;
-            margin: 20px 0;
-            border: 1px solid #ccc;
-        }
-        .price {
-            color: #e74c3c;
-            font-weight: bold;
-        }
-        .section-title {
-            margin-top: 40px;
-        }
-    </style>
+    <title>{{ title }}</title>
 </head>
 <body>
-    <header>
-        <h1>Vehículos Deportivos</h1>
-    </header>
-    <div class="container">
-        <h2 class="section-title">Autos Deportivos</h2>
-        {% for car in cars %}
-        <div class="vehicle">
-            <h3>{{ car.name }}</h3>
-            <p class="price">{{ car.price }}</p>
-            <p>{{ car.description }}</p>
-        </div>
+    <h1>{{ title }}</h1>
+    <ul>
+        {% for vehicle in vehicles %}
+        <li>
+            <h2>{{ vehicle.name }}</h2>
+            <p>Precio: {{ vehicle.price }}</p>
+            <p>{{ vehicle.description }}</p>
+        </li>
         {% endfor %}
-
-        <header>
-            <h1>Motos Deportivos</h1>
-        </header>
-
-        <h2 class="section-title">Motos Deportivas</h2>
-        {% for bike in bikes %}
-        <div class="vehicle">
-            <h3>{{ bike.name }}</h3>
-            <p class="price">{{ bike.price }}</p>
-            <p>{{ bike.description }}</p>
-        </div>
-        {% endfor %}
-    </div>
-    <a href="{{ url_for('logout') }}">Cerrar sesión</a>
+    </ul>
+    <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
 </body>
 </html>
